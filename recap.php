@@ -7,6 +7,8 @@
 
 session_start();
 
+// ob_start();
+
 // on initialise le total du nombre de produits à 0
 $totalProduits = 0;
 
@@ -140,6 +142,11 @@ if(isset($_SESSION['products']) && !empty($_SESSION['products'])) {
                   "</table>",
                 "</form>";
         }
+
+        // $content = ob_get_clean();
+
+        // require_once "template.php";
+
     ?>
 </body>
 </html>

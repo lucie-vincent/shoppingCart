@@ -68,9 +68,12 @@ ob_start();
       // et le contenu est stocké dans la variable $content
       $content = ob_get_clean();
 
+      $title = "Ajouter un produit";
+
       // on inclus le fichier template.php
       // cela équivaut à coller le code de template.php : $content est reconnue car instanciée
       // plus haut
-      require_once "template.php";
+      
+      require "template.php";
 
       ?>

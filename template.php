@@ -5,20 +5,8 @@
 //  appelle la fct session_start() en début de fichier pour récupérer
 //  la session utilisateur
 
-session_start();
+require_once "functions.php";
 
-// on initialise le total du nombre de produits à 0
-$totalProduits = 0;
-
-// !(a && b) == !a || !b
-// !(a || b) == !a && !b
-
-// si le panier existe et n'est pas vide
-if(isset($_SESSION['products']) && !empty($_SESSION['products'])) {
-  foreach($_SESSION['products'] as $index => $product) {
-    $totalProduits += $product['qtt'] ;
-  }
-}
 ?>
 
 <!DOCTYPE html>
@@ -26,7 +14,7 @@ if(isset($_SESSION['products']) && !empty($_SESSION['products'])) {
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Récapitulatif des produits</title>
+    <title><?= $title ?></title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" 
     integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" 
     crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -54,7 +42,7 @@ if(isset($_SESSION['products']) && !empty($_SESSION['products'])) {
               Panier
               <span class="position-absolute top-0 start-100 translate-middle 
               badge rounded-pill bg-danger">
-              <?= $totalProduits ?></p>
+              <?= getTotalProduct(); ?>
                 <span class="visually-hidden">Panier</span>
               </span>
               </button>

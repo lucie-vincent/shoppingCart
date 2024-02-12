@@ -42,7 +42,7 @@ require_once "functions.php";
               Panier
               <span class="position-absolute top-0 start-100 translate-middle 
               badge rounded-pill bg-danger">
-              <?= getTotalProduct(); ?>
+              <?= afficherTotalProduits(); ?>
                 <span class="visually-hidden">Panier</span>
               </span>
               </button>

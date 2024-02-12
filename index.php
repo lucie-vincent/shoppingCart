@@ -1,12 +1,23 @@
 <?php
 // on appelle la fct session_start() en début de fichier pour récupérer
 // la session utilisateur
-// session_start();
+session_start();
 
 // on démarre la temporisation de sortie
 ob_start();
 
+// on initialise le total du nombre de produits à 0
+$totalProduits = 0;
 
+// !(a && b) == !a || !b
+// !(a || b) == !a && !b
+
+// si le panier existe et n'est pas vide
+if(isset($_SESSION['products']) && !empty($_SESSION['products'])) {
+  foreach($_SESSION['products'] as $index => $product) {
+    $totalProduits += $product['qtt'] ;
+  }
+}
 
 ?>
     
@@ -19,11 +30,12 @@ ob_start();
       données du formulaire. Si aucune méthode n'est spécifiée, 
       la methode GET est utilisée. Les données renseignées
       dans les champs du formulaire sont donc inscrites dans l'URL avec cette méthode. -->
-      <form action="traitement.php?action=ajouter" method="post" >
+      <!-- on ajout l'attribut enctype pour la soumission de form avec un type file -->
+      <form action="traitement.php?action=ajouter" method="POST" enctype="multipart/form-data" >
         <p>
             <label for="">
-                <!-- Nom du produit :
-                chaque input a un attribut "name", ce qui permet à 
+                Nom du produit :
+                <!--chaque input a un attribut "name", ce qui permet à 
                 la requête de classer le contenu saisi dans les clés qui 
                 portent les noms choisis. (ici: name, price, qtt)  -->
                 <input type="text" name="name" class="form-control" 
@@ -44,11 +56,19 @@ ob_start();
                 placeholder="Quantitée désirée">
             </label>
         </p>
+        <p> 
+          <!-- label et input pour ajout de fichier -->
+          <label for="file">Fichier</label>
+          <input type="file" name="file" class="form-control" >
+          <!-- <button type="submit" name="submit" class="btn btn-outline-primary">
+              Ajouter l'image
+            </button> -->
+        </p>
         <p>
             <!-- le input de type "submit" a aussi un attribut "name" : 
             cela permet à vérifier côté serveur que le formulaire a bien été 
             validé par l'utilisateur -->
-            <button type="submit" name="submit" class="btn btn-outline-primary">
+            <button type="submit" name="submit" class="btn btn-success">
               Ajouter le produit
             </button>
         </p>
@@ -73,7 +93,7 @@ ob_start();
       // on inclus le fichier template.php
       // cela équivaut à coller le code de template.php : $content est reconnue car instanciée
       // plus haut
-      
+
       require "template.php";
 
       ?>

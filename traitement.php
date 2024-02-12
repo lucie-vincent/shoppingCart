@@ -7,6 +7,15 @@
 
 session_start();
 
+// if (isset($_FILES['file'])) {
+//     $tamponNom  = $_FILES['file']['tmp_name'];
+//     $name       = $_FILES['file']['name'];
+//     $size       = $_FILES['file']['size'];
+//     $error      = $_FILES['file']['error'];
+// }
+
+
+
 if (isset($_GET['action'])) {
     
     // nettoyage de "id" reçu en GET
@@ -45,6 +54,7 @@ function ajouterProduit() {
     // accès seulement si les requêtes HTTP proviennent de la soumission
     // du formulaire
     
+
     // isset : détermine si une variable est déclarée et est différente de null
     // puis on vérifie l'existence de la clé submit dans le tableau $_POST
     // la condition est vraie si la requête POST transmet 1 clé submit au serveur
@@ -70,6 +80,7 @@ function ajouterProduit() {
         // différent de 0 (considéré comme nul)
         $qtt = filter_input(INPUT_POST,"qtt", FILTER_VALIDATE_INT);
         
+
         // on vérifie si les filtres ont bien fonctionné grâce à une nouvelle condition
         // pas de comparaison dans la condition car on vérifie si non null ou false
         if ($name && $price && $qtt) {
@@ -89,8 +100,11 @@ function ajouterProduit() {
             // products associé à cette clé.
             $_SESSION['products'][] = $product;
             $_SESSION['message'] = "produit ajouté";
+           
         }
     }
+
+
     // envoie une nouvelle entête HTTP au client. Le type d'appel : Location
     header("Location:index.php");
     die();

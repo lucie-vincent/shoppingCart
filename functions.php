@@ -1,7 +1,7 @@
 <?php
 
 
-function getTotalProduct() {
+function afficherTotalProduits() {
     // on initialise le total du nombre de produits à 0
     $totalProduits = 0;
 

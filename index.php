@@ -19,6 +19,7 @@ if(isset($_SESSION['products']) && !empty($_SESSION['products'])) {
   }
 }
 
+
 ?>
     
       <h1>Ajouter un produit</h1>

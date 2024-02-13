@@ -57,6 +57,8 @@ if(isset($_SESSION['products']) && !empty($_SESSION['products'])) {
             echo "<tr>",
                     "<td>" . $index . "</td>",
 
+                    "<td> <img src='./upload/" .$fileName. "</td>",
+
                     "<td>" . $product['name'] . "</td>",
 
                     // number_format() permet de modifier l'affichage

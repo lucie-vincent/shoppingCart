@@ -15,38 +15,38 @@ session_start();
 // }
 
 
-
 if (isset($_GET['action'])) {
     
     // nettoyage de "id" reçu en GET
     $id = filter_input(INPUT_GET, "id", FILTER_SANITIZE_NUMBER_INT);
-
+    
     switch($_GET['action']) {
         // on vérifie le paramètre de l'action
         case "ajouter" :
             // on appelle la fonction liée à cette action
             ajouterProduit();
-        break;
-        case "vider-panier":
-            viderPanier();
-        break;
-        case "supprimer-produit":
-            supprimerProduit($id);
-        break;
-        case "modifier-qtt":
-            // on vérifie si l'action contient également 'augmenter'
-            if (isset($_GET['augmenter'])) {
-                // on récupère la valeur du paramètre et on le convertit en booléen
-                $augmenter = ($_GET['augmenter'] == 'true');
+            break;
+            case "vider-panier":
+                viderPanier();
+                break;
+                case "supprimer-produit":
+                    supprimerProduit($id);
+                    break;
+                    case "modifier-qtt":
+                        // on vérifie si l'action contient également 'augmenter'
+                        if (isset($_GET['augmenter'])) {
+                            // on récupère la valeur du paramètre et on le convertit en booléen
+                            $augmenter = ($_GET['augmenter'] == 'true');
                 // on appelle la fonction avec le booléen en paramètre, qui va effectuer 
                 // l'action selon si $augmenter est vrai ou faux
                 modifierQtt($id, $augmenter);
             }
             
-        break;
-    }
+            break;
+        }
 }
     
+
     
 function ajouterProduit() {
     // pour éviter à un utilisateur mal intentionné d'atteindre le fichier traitement.php
@@ -54,11 +54,11 @@ function ajouterProduit() {
     // accès seulement si les requêtes HTTP proviennent de la soumission
     // du formulaire
     
-
+    
     // isset : détermine si une variable est déclarée et est différente de null
     // puis on vérifie l'existence de la clé submit dans le tableau $_POST
     // la condition est vraie si la requête POST transmet 1 clé submit au serveur
-    if (isset($_POST['submit'])) {
+    if (isset($_POST['submit']) && isset($_FILES['file'])) {
         // pour éviter les failles par injection de code, on vérifie l'intégrité
         // des valeurs transmises dans le tableau $_POST
         
@@ -100,11 +100,48 @@ function ajouterProduit() {
             // products associé à cette clé.
             $_SESSION['products'][] = $product;
             $_SESSION['message'] = "produit ajouté";
-           
+            
+        }
+
+
+        // traitement image
+        $tmpName  = $_FILES['file']['tmp_name'];
+        $name     = $_FILES['file']['name'];
+        $size     = $_FILES['file']['size'];
+        $error    = $_FILES['file']['error'];
+      
+      
+        // pomme.jpg
+        // ['pomme', 'jpg']
+        $tabExtension = explode('.', $name);
+        $extension = strtolower(end($tabExtension));
+      
+        // tableau des extensions autorisées
+        $extensionsAutorisees = ['jpg', 'jpeg', 'gif', 'png'];
+        
+        $tailleMax = 400000;
+      
+        // var_dump(in_array($extension, $extensionsAutorisees));
+        // var_dump($size <= $tailleMax);
+        // var_dump($error == 0);
+        // var_dump($size);
+            
+        if(in_array($extension, $extensionsAutorisees) && $size <= $tailleMax && $error == 0) {
+          // pouvoir ajouter des fichiers avec même nom : on crée nom unique
+          $uniqueName = uniqid('', true);
+          $fileName = $uniqueName. '.' .$extension;
+          var_dump($fileName);
+          
+          // choisir l'endroit enregitrement image
+          move_uploaded_file($tmpName,'./upload/'.$fileName);
+      
+        }
+        else {
+          echo "Mauvaise extension ou taille trop importante ou erreur";
         }
     }
-
-
+    
+    
     // envoie une nouvelle entête HTTP au client. Le type d'appel : Location
     header("Location:index.php");
     die();

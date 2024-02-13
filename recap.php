@@ -57,7 +57,7 @@ if(isset($_SESSION['products']) && !empty($_SESSION['products'])) {
             echo "<tr>",
                     "<td>" . $index . "</td>",
 
-                    "<td> <img src='./upload/" .$fileName. "</td>",
+                    "<td> <img src='upload/" .$product['imgName']. " '/> </td>",
 
                     "<td>" . $product['name'] . "</td>",
 

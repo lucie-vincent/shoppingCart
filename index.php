@@ -19,6 +19,7 @@ if(isset($_SESSION['products']) && !empty($_SESSION['products'])) {
   }
 }
 
+var_dump($_SESSION);
 
 ?>
     

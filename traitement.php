@@ -80,40 +80,16 @@ function ajouterProduit() {
         // différent de 0 (considéré comme nul)
         $qtt = filter_input(INPUT_POST,"qtt", FILTER_VALIDATE_INT);
         
-
-        // on vérifie si les filtres ont bien fonctionné grâce à une nouvelle condition
-        // pas de comparaison dans la condition car on vérifie si non null ou false
-        if ($name && $price && $qtt) {
-            // on crée un tableau associatif $product
-            $product = [
-                "name" => $name,
-                "price" => $price,
-                "qtt" => $qtt,
-                "total" => $price*$qtt
-            ];
-            
-            // on enregistre le tableau $products dans le tableau de session
-            // $_SESSION
-            // on sollicite le tableau de session $_SESSION et on indique la clé
-            // products de ce tableau; si elle n'existait pas, php la crée.
-            // les [] indiquent qu'on ajoute une nouvelle entrée au futur tableau
-            // products associé à cette clé.
-            $_SESSION['products'][] = $product;
-            $_SESSION['message'] = "produit ajouté";
-            
-        }
-
-
         // traitement image
         $tmpName  = $_FILES['file']['tmp_name'];
-        $name     = $_FILES['file']['name'];
+        $imgName  = $_FILES['file']['name'];
         $size     = $_FILES['file']['size'];
         $error    = $_FILES['file']['error'];
       
       
         // pomme.jpg
         // ['pomme', 'jpg']
-        $tabExtension = explode('.', $name);
+        $tabExtension = explode('.', $imgName);
         $extension = strtolower(end($tabExtension));
       
         // tableau des extensions autorisées
@@ -128,19 +104,46 @@ function ajouterProduit() {
             
         if(in_array($extension, $extensionsAutorisees) && $size <= $tailleMax && $error == 0) {
           // pouvoir ajouter des fichiers avec même nom : on crée nom unique
-          $uniqueName = uniqid('', true);
-          $fileName = $uniqueName. '.' .$extension;
-          var_dump($fileName);
+        //   $uniqueName = uniqid('', true);
+        //   $fileName = $uniqueName. '.' .$extension;
+        //   var_dump($fileName);
           
           // choisir l'endroit enregitrement image
-          move_uploaded_file($tmpName,'./upload/'.$fileName);
+          move_uploaded_file($tmpName,'./upload/'.$imgName);
       
         }
         else {
           echo "Mauvaise extension ou taille trop importante ou erreur";
         }
+
+
+        // on vérifie si les filtres ont bien fonctionné grâce à une nouvelle condition
+        // pas de comparaison dans la condition car on vérifie si non null ou false
+        if ($name && $price && $qtt) {
+            // on crée un tableau associatif $product
+            $product = [
+                "name" => $name,
+                "price" => $price,
+                "qtt" => $qtt,
+                "total" => $price*$qtt,
+                "tmpName" => $tmpName,
+                "imgName" =>$imgName,
+                "size" =>$size,
+                "error" =>$error,
+            ];
+            
+            // on enregistre le tableau $products dans le tableau de session
+            // $_SESSION
+            // on sollicite le tableau de session $_SESSION et on indique la clé
+            // products de ce tableau; si elle n'existait pas, php la crée.
+            // les [] indiquent qu'on ajoute une nouvelle entrée au futur tableau
+            // products associé à cette clé.
+            $_SESSION['products'][] = $product;
+            $_SESSION['message'] = "produit ajouté";
+            
+        }
+
     }
-    
     
     // envoie une nouvelle entête HTTP au client. Le type d'appel : Location
     header("Location:index.php");
